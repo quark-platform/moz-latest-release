@@ -1,7 +1,9 @@
-name = "{{project-name}}"
+name = "moz-latest-release"
 type = "javascript"
 workers_dev = true
 compatibility_date = "2022-01-20"
+account_id = "51e833a11dde67f4fb5100a8ca6fccf3"
+
 
 [vars]
 WORKERS_RS_VERSION = "0.0.9"

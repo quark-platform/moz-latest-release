@@ -1,7 +1,14 @@
+use std::convert::TryFrom;
+
 use serde_json::json;
+use version::{get_source_url, get_version_from_target, FirefoxTargets};
 use worker::*;
 
 mod utils;
+mod version;
+
+const SOURCE_HELP: &'static str = include_str!("../docs/source.html");
+const INDEX_HELP: &'static str = include_str!("../docs/index.html");
 
 fn log_request(req: &Request) {
     console_log!(
@@ -29,26 +36,49 @@ pub async fn main(req: Request, env: Env, _ctx: worker::Context) -> Result<Respo
     // functionality and a `RouteContext` which you can use to  and get route parameters and
     // Environment bindings like KV Stores, Durable Objects, Secrets, and Variables.
     router
-        .get("/", |_, _| Response::ok("Hello from Workers!"))
-        .post_async("/form/:field", |mut req, ctx| async move {
-            if let Some(name) = ctx.param("field") {
-                let form = req.form_data().await?;
-                match form.get(name) {
-                    Some(FormEntry::Field(value)) => {
-                        return Response::from_json(&json!({ name: value }))
-                    }
-                    Some(FormEntry::File(_)) => {
-                        return Response::error("`field` param in form shouldn't be a File", 422);
-                    }
-                    None => return Response::error("Bad Request", 400),
-                }
+        .get("/", |_, _| Response::from_html(INDEX_HELP))
+        .get_async("/version/:target", |_, ctx| async move {
+            if let Some(target) = ctx.param("target") {
+                let version = get_version_from_target(target).await;
+
+                return if let Ok(version) = version {
+                    Response::ok(version)
+                } else {
+                    let error = version.err().unwrap(); // Will always be an error
+                    Response::error(error.to_string(), 500)
+                };
             }
 
             Response::error("Bad Request", 400)
         })
-        .get("/worker-version", |_, ctx| {
-            let version = ctx.var("WORKERS_RS_VERSION")?.to_string();
-            Response::ok(version)
+        .get("/source", |_, _| Response::from_html(SOURCE_HELP))
+        .get_async("/source/:target", |_, ctx| async move {
+            if let Some(target) = ctx.param("target") {
+                let version = get_version_from_target(target).await;
+
+                return if let Ok(version) = version {
+                    Response::redirect_with_status(Url::parse(&get_source_url(version))?, 302)
+                } else {
+                    let error = version.err().unwrap(); // Will always be an error
+                    Response::error(format!("Error finding version: {}", error.to_string()), 500)
+                };
+            }
+
+            Response::error("Bad Request", 400)
+        })
+        .get_async("/source/:target/url", |_, ctx| async move {
+            if let Some(target) = ctx.param("target") {
+                let version = get_version_from_target(target).await;
+
+                return if let Ok(version) = version {
+                    Response::ok(get_source_url(version))
+                } else {
+                    let error = version.err().unwrap(); // Will always be an error
+                    Response::error(format!("Error finding version: {}", error.to_string()), 500)
+                };
+            }
+
+            Response::error("Bad Request", 400)
         })
         .run(req, env)
         .await

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>API Index</title>
+  </head>
+  <body>
+    <h1>Mozilla latest release api</h1>
+    <p>
+      This API returns information regarding the latest releases of a variety of
+      Firefox products and their source code properties. APIs that are available
+      are
+    </p>
+
+    <ul>
+      <li>
+        <code>/version/:target</code> - Returns the latest version at this
+        target
+      </li>
+      <li>
+        <code>/source/:target</code> - Redirects to the download for the latest
+        source code of this target
+      </li>
+      <li>
+        <code>/source/:target/url</code> - The url to download the latest source
+        code of this target
+      </li>
+    </ul>
+
+    <h2>Notes</h2>
+    <ul>
+      <li>
+        A list of <code>:target</code>s can be found by entering an incorrect
+        value
+      </li>
+    </ul>
+  </body>
+</html>
