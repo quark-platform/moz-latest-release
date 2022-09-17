@@ -1,7 +1,4 @@
-use std::convert::TryFrom;
-
-use serde_json::json;
-use version::{get_source_url, get_version_from_target, FirefoxTargets};
+use version::{get_source_url, get_version_from_target};
 use worker::*;
 
 mod utils;
