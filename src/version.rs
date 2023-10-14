@@ -9,17 +9,9 @@ pub struct FirefoxVersionAPI {
     pub FIREFOX_ESR: String,
     pub FIREFOX_ESR_NEXT: String,
     pub FIREFOX_NIGHTLY: String,
-    pub FIREFOX_PINEBUILD: String,
     pub LAST_MERGE_DATE: String,
     pub LAST_RELEASE_DATE: String,
-    pub LAST_SOFTFREEZE_DATE: String,
-    pub LATEST_FIREFOX_DEVEL_VERSION: String,
-    pub LATEST_FIREFOX_OLDER_VERSION: String,
-    pub LATEST_FIREFOX_RELEASED_DEVEL_VERSION: String,
     pub LATEST_FIREFOX_VERSION: String,
-    pub NEXT_MERGE_DATE: String,
-    pub NEXT_RELEASE_DATE: String,
-    pub NEXT_SOFTFREEZE_DATE: String,
 }
 
 impl FirefoxVersionAPI {
