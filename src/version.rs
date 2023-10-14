@@ -12,6 +12,7 @@ pub struct FirefoxVersionAPI {
     pub LAST_MERGE_DATE: String,
     pub LAST_RELEASE_DATE: String,
     pub LATEST_FIREFOX_VERSION: String,
+    pub LATEST_FIREFOX_DEVEL_VERSION: String,
 }
 
 impl FirefoxVersionAPI {

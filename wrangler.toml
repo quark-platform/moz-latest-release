@@ -1,24 +1,8 @@
 name = "moz-latest-release"
-type = "javascript"
 workers_dev = true
 compatibility_date = "2022-01-20"
 account_id = "51e833a11dde67f4fb5100a8ca6fccf3"
-
-
-[vars]
-WORKERS_RS_VERSION = "0.0.9"
+main = "build/worker/shim.mjs"
 
 [build]
 command = "cargo install -q worker-build && worker-build --release" # required
-
-[build.upload]
-dir = "build/worker"
-format = "modules"
-main = "./shim.mjs"
-
-[[build.upload.rules]]
-globs = ["**/*.wasm"]
-type = "CompiledWasm"
-
-# read more about configuring your Worker via wrangler.toml at:
-# https://developers.cloudflare.com/workers/cli-wrangler/configuration
